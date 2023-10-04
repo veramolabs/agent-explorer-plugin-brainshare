@@ -68238,13 +68238,13 @@ var getMarkdownComponent = (token) => {
 };
 
 // src/IdentifierHoverComponent.tsx
+var import_react22 = __toESM(require_react(), 1);
 var import_veramo_react9 = __toESM(require_veramo_react(), 1);
 var import_react_query9 = __toESM(require_react_query(), 1);
 var import_antd10 = __toESM(require_antd(), 1);
 var import_jsx_runtime12 = __toESM(require_jsx_runtime(), 1);
 var IdentifierHoverComponent = ({ did }) => {
   const { agent } = (0, import_veramo_react9.useVeramo)();
-  console.log("did: ", did);
   const { data: credentials, isLoading, refetch } = (0, import_react_query9.useQuery)(
     ["domain-linkage", { agentId: agent?.context.name }],
     () => agent?.dataStoreORMGetVerifiableCredentials({
@@ -68252,11 +68252,15 @@ var IdentifierHoverComponent = ({ did }) => {
       order: [{ column: "issuanceDate", direction: "DESC" }]
     })
   );
-  console.log("credentials: ", credentials);
-  if (isLoading || !credentials || credentials.length === 0) {
+  const domain = import_react22.default.useMemo(() => {
+    return credentials?.[0]?.verifiableCredential?.credentialSubject?.domain;
+  }, [credentials]);
+  if (isLoading) {
+    return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_antd10.Spin, {});
+  }
+  if (domain === void 0) {
     return null;
   }
-  const domain = credentials[0].verifiableCredential.credentialSubject.domain;
   return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_antd10.Typography.Text, { children: domain });
 };
 

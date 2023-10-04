@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React from 'react';
 import { IIdentifierHoverComponentProps } from "@veramo-community/agent-explorer-plugin";
 import { IDataStoreORM } from '@veramo/core-types';
@@ -7,11 +5,9 @@ import { useVeramo } from '@veramo-community/veramo-react';
 import { useQuery } from 'react-query';
 import { Spin, Typography } from 'antd';
 
-
 export const IdentifierHoverComponent: React.FC<IIdentifierHoverComponentProps> = ({did}) => {
   const { agent } = useVeramo<IDataStoreORM>()
 
-    console.log("did: ", did)
   const { data: credentials, isLoading, refetch } = useQuery(
     ['domain-linkage', { agentId: agent?.context.name }],
     () =>
@@ -21,13 +17,19 @@ export const IdentifierHoverComponent: React.FC<IIdentifierHoverComponentProps> 
       }),
   )
 
-      console.log("credentials: ", credentials)
+  const domain = React.useMemo<string | undefined>(() => {
+    return credentials?.[0]?.verifiableCredential?.credentialSubject?.domain
+  }, [credentials])
 
-      if (isLoading || !credentials || credentials.length === 0) {
-        return null
-      }
+  if (isLoading) {
+    return (
+      <Spin />
+    )
+  }
 
-      const domain = credentials[0].verifiableCredential.credentialSubject.domain
+  if (domain === undefined) {
+    return null
+  }
 
   return (
     <Typography.Text>
