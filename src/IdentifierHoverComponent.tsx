@@ -4,22 +4,26 @@ import { IDataStoreORM } from '@veramo/core-types';
 import { useVeramo } from '@veramo-community/veramo-react';
 import { useQuery } from 'react-query';
 import { Spin, Typography } from 'antd';
+import { CheckCircleOutlined } from '@ant-design/icons';
 
 export const IdentifierHoverComponent: React.FC<IIdentifierHoverComponentProps> = ({did}) => {
   const { agent } = useVeramo<IDataStoreORM>()
 
-  const { data: credentials, isLoading, refetch } = useQuery(
-    ['domain-linkage', { agentId: agent?.context.name }],
+  const { data: credentials, isLoading } = useQuery(
+    ['domain-linkage', { agentId: agent?.context.name, did }],
     () =>
       agent?.dataStoreORMGetVerifiableCredentials({
-        where: [{ column: 'type', value: ['VerifiableCredential,BrainShareDomainLinkage'] }, {column: 'subject', value: [did]}],
+        where: [
+          { column: 'type', value: ['VerifiableCredential,BrainShareDomainLinkage'] },
+          {column: 'subject', value: [did]}
+        ],
         order: [{ column: 'issuanceDate', direction: 'DESC' }],
       }),
   )
 
   const domain = React.useMemo<string | undefined>(() => {
     return credentials?.[0]?.verifiableCredential?.credentialSubject?.domain
-  }, [credentials])
+  }, [credentials, did])
 
   if (isLoading) {
     return (
@@ -27,13 +31,13 @@ export const IdentifierHoverComponent: React.FC<IIdentifierHoverComponentProps> 
     )
   }
 
-  if (domain === undefined) {
+  if (!domain) {
     return null
   }
 
   return (
     <Typography.Text>
-      {domain}
+      <CheckCircleOutlined /> {domain}
     </Typography.Text>
   )
 }
