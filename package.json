@@ -44,6 +44,7 @@
 		"remark-parse": "^11.0.0",
 		"remark-wiki-link": "^2.0.1",
 		"unified": "^11.0.3",
+		"use-text-selection": "^1.1.5",
 		"uuid": "^9.0.1"
 	}
 }

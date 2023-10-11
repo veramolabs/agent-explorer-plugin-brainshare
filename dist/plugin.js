@@ -2039,6 +2039,110 @@ var require_browser = __commonJS({
   }
 });
 
+// node_modules/.pnpm/use-text-selection@1.1.5_react@18.2.0_typescript@5.2.2/node_modules/use-text-selection/dist/index.js
+var require_dist = __commonJS({
+  "node_modules/.pnpm/use-text-selection@1.1.5_react@18.2.0_typescript@5.2.2/node_modules/use-text-selection/dist/index.js"(exports2) {
+    "use strict";
+    var __assign = exports2 && exports2.__assign || function() {
+      __assign = Object.assign || function(t2) {
+        for (var s2, i2 = 1, n2 = arguments.length; i2 < n2; i2++) {
+          s2 = arguments[i2];
+          for (var p2 in s2)
+            if (Object.prototype.hasOwnProperty.call(s2, p2))
+              t2[p2] = s2[p2];
+        }
+        return t2;
+      };
+      return __assign.apply(this, arguments);
+    };
+    Object.defineProperty(exports2, "__esModule", { value: true });
+    exports2.useTextSelection = void 0;
+    var react_1 = require_react();
+    function roundValues(_rect) {
+      var rect = __assign({}, _rect);
+      for (var _i = 0, _a = Object.keys(rect); _i < _a.length; _i++) {
+        var key = _a[_i];
+        rect[key] = Math.round(rect[key]);
+      }
+      return rect;
+    }
+    function shallowDiff(prev, next) {
+      if (prev != null && next != null) {
+        for (var _i = 0, _a = Object.keys(next); _i < _a.length; _i++) {
+          var key = _a[_i];
+          if (prev[key] != next[key]) {
+            return true;
+          }
+        }
+      } else if (prev != next) {
+        return true;
+      }
+      return false;
+    }
+    var defaultState = {};
+    function useTextSelection2(target) {
+      var _a = react_1.useState(defaultState), _b = _a[0], clientRect = _b.clientRect, isCollapsed = _b.isCollapsed, textContent = _b.textContent, setState2 = _a[1];
+      var reset = react_1.useCallback(function() {
+        setState2(defaultState);
+      }, []);
+      var handler = react_1.useCallback(function() {
+        var newRect;
+        var selection = window.getSelection();
+        var newState = {};
+        if (selection == null || !selection.rangeCount) {
+          setState2(newState);
+          return;
+        }
+        var range = selection.getRangeAt(0);
+        if (target != null && !target.contains(range.commonAncestorContainer)) {
+          setState2(newState);
+          return;
+        }
+        if (range == null) {
+          setState2(newState);
+          return;
+        }
+        var contents = range.cloneContents();
+        if (contents.textContent != null) {
+          newState.textContent = contents.textContent;
+        }
+        var rects = range.getClientRects();
+        if (rects.length === 0 && range.commonAncestorContainer != null) {
+          var el = range.commonAncestorContainer;
+          newRect = roundValues(el.getBoundingClientRect().toJSON());
+        } else {
+          if (rects.length < 1)
+            return;
+          newRect = roundValues(rects[0].toJSON());
+        }
+        if (shallowDiff(clientRect, newRect)) {
+          newState.clientRect = newRect;
+        }
+        newState.isCollapsed = range.collapsed;
+        setState2(newState);
+      }, [target]);
+      react_1.useLayoutEffect(function() {
+        document.addEventListener("selectionchange", handler);
+        document.addEventListener("keydown", handler);
+        document.addEventListener("keyup", handler);
+        window.addEventListener("resize", handler);
+        return function() {
+          document.removeEventListener("selectionchange", handler);
+          document.removeEventListener("keydown", handler);
+          document.removeEventListener("keyup", handler);
+          window.removeEventListener("resize", handler);
+        };
+      }, [target]);
+      return {
+        clientRect,
+        isCollapsed,
+        textContent
+      };
+    }
+    exports2.useTextSelection = useTextSelection2;
+  }
+});
+
 // node_modules/.pnpm/@ant-design+icons@5.2.6_react-dom@18.2.0_react@18.2.0/node_modules/@ant-design/icons/es/components/Context.js
 var import_react = __toESM(require_react());
 var IconContext = /* @__PURE__ */ (0, import_react.createContext)({});
@@ -3331,8 +3435,27 @@ if (true) {
 }
 var LinkOutlined_default2 = /* @__PURE__ */ React8.forwardRef(LinkOutlined2);
 
-// node_modules/.pnpm/@ant-design+icons@5.2.6_react-dom@18.2.0_react@18.2.0/node_modules/@ant-design/icons/es/icons/PlusOutlined.js
+// node_modules/.pnpm/@ant-design+icons@5.2.6_react-dom@18.2.0_react@18.2.0/node_modules/@ant-design/icons/es/icons/PicLeftOutlined.js
 var React9 = __toESM(require_react());
+
+// node_modules/.pnpm/@ant-design+icons-svg@4.3.1/node_modules/@ant-design/icons-svg/es/asn/PicLeftOutlined.js
+var PicLeftOutlined = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M952 792H72c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h880c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0-632H72c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h880c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM608 660c8.8 0 16-7.2 16-16V380c0-8.8-7.2-16-16-16H96c-8.8 0-16 7.2-16 16v264c0 8.8 7.2 16 16 16h512zM152 436h400v152H152V436zm552 210c0 4.4 3.6 8 8 8h224c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H712c-4.4 0-8 3.6-8 8v56zm8-204h224c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H712c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8z" } }] }, "name": "pic-left", "theme": "outlined" };
+var PicLeftOutlined_default = PicLeftOutlined;
+
+// node_modules/.pnpm/@ant-design+icons@5.2.6_react-dom@18.2.0_react@18.2.0/node_modules/@ant-design/icons/es/icons/PicLeftOutlined.js
+var PicLeftOutlined2 = function PicLeftOutlined3(props, ref) {
+  return /* @__PURE__ */ React9.createElement(AntdIcon_default, _extends({}, props, {
+    ref,
+    icon: PicLeftOutlined_default
+  }));
+};
+if (true) {
+  PicLeftOutlined2.displayName = "PicLeftOutlined";
+}
+var PicLeftOutlined_default2 = /* @__PURE__ */ React9.forwardRef(PicLeftOutlined2);
+
+// node_modules/.pnpm/@ant-design+icons@5.2.6_react-dom@18.2.0_react@18.2.0/node_modules/@ant-design/icons/es/icons/PlusOutlined.js
+var React10 = __toESM(require_react());
 
 // node_modules/.pnpm/@ant-design+icons-svg@4.3.1/node_modules/@ant-design/icons-svg/es/asn/PlusOutlined.js
 var PlusOutlined = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z" } }, { "tag": "path", "attrs": { "d": "M192 474h672q8 0 8 8v60q0 8-8 8H160q-8 0-8-8v-60q0-8 8-8z" } }] }, "name": "plus", "theme": "outlined" };
@@ -3340,7 +3463,7 @@ var PlusOutlined_default = PlusOutlined;
 
 // node_modules/.pnpm/@ant-design+icons@5.2.6_react-dom@18.2.0_react@18.2.0/node_modules/@ant-design/icons/es/icons/PlusOutlined.js
 var PlusOutlined2 = function PlusOutlined3(props, ref) {
-  return /* @__PURE__ */ React9.createElement(AntdIcon_default, _extends({}, props, {
+  return /* @__PURE__ */ React10.createElement(AntdIcon_default, _extends({}, props, {
     ref,
     icon: PlusOutlined_default
   }));
@@ -3348,7 +3471,7 @@ var PlusOutlined2 = function PlusOutlined3(props, ref) {
 if (true) {
   PlusOutlined2.displayName = "PlusOutlined";
 }
-var PlusOutlined_default2 = /* @__PURE__ */ React9.forwardRef(PlusOutlined2);
+var PlusOutlined_default2 = /* @__PURE__ */ React10.forwardRef(PlusOutlined2);
 
 // src/Feed.tsx
 var import_react16 = __toESM(require_react(), 1);
@@ -11395,10 +11518,10 @@ var LinkDomain = () => {
 // src/BrainSharePost.tsx
 var import_agent_explorer_plugin7 = __toESM(require_agent_explorer_plugin(), 1);
 var import_jsx_runtime8 = __toESM(require_jsx_runtime(), 1);
-var BrainSharePost = ({ credential: { verifiableCredential } }) => {
+var BrainSharePost = ({ credential }) => {
   return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
-    verifiableCredential.credentialSubject.title && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { children: verifiableCredential.credentialSubject.title }),
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_agent_explorer_plugin7.MarkDown, { content: verifiableCredential.credentialSubject.post })
+    credential.verifiableCredential.credentialSubject.title && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { children: credential.verifiableCredential.credentialSubject.title }),
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_agent_explorer_plugin7.MarkDown, { content: credential.verifiableCredential.credentialSubject.post, credential })
   ] });
 };
 
@@ -11410,6 +11533,31 @@ var import_jsx_runtime9 = __toESM(require_jsx_runtime(), 1);
 var getCredentialContextMenuItems = (credential) => {
   const navigate = (0, import_react_router_dom6.useNavigate)();
   const { notification } = import_antd8.App.useApp();
+  const handleCopyEmbed = () => {
+    let embed = "";
+    if (credential.verifiableCredential.proof?.jwt) {
+      embed = `\`\`\`vc+jwt
+${credential.verifiableCredential.proof.jwt}
+\`\`\``;
+    } else {
+      embed = `\`\`\`vc+json
+${JSON.stringify(credential.verifiableCredential, null, 2)}
+\`\`\``;
+    }
+    navigator.clipboard.writeText(embed);
+    notification.success({
+      message: "Credential embed copied to clipboard"
+    });
+  };
+  const handleCopyReference = () => {
+    const reference = `\`\`\`vc+multihash
+${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.hash}
+\`\`\``;
+    navigator.clipboard.writeText(reference);
+    notification.success({
+      message: "Credential reference copied to clipboard"
+    });
+  };
   const handleCopyWikilink = () => {
     const wikilink = credential.verifiableCredential.credentialSubject.title ? `[[${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.hash}|${credential.verifiableCredential.credentialSubject.title}]]` : `[[${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.hash}]]`;
     navigator.clipboard.writeText(wikilink);
@@ -11436,6 +11584,18 @@ var getCredentialContextMenuItems = (credential) => {
         label: "Copy wiki link",
         icon: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(LinkOutlined_default2, {}),
         onClick: handleCopyWikilink
+      },
+      {
+        key: "embed",
+        label: "Copy embed",
+        icon: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(PicLeftOutlined_default2, {}),
+        onClick: handleCopyEmbed
+      },
+      {
+        key: "reference",
+        label: "Copy reference",
+        icon: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(PicLeftOutlined_default2, {}),
+        onClick: handleCopyReference
       }
     ];
   }
@@ -11527,6 +11687,9 @@ var Edit = () => {
     }
   );
 };
+
+// src/markdown.tsx
+var import_react23 = __toESM(require_react(), 1);
 
 // node_modules/.pnpm/uint8arrays@4.0.6/node_modules/uint8arrays/dist/src/util/as-uint8array.js
 function asUint8Array(buf) {
@@ -18114,15 +18277,63 @@ var debug = (0, import_debug.default)("veramo:utils");
 
 // src/markdown.tsx
 var import_agent_explorer_plugin9 = __toESM(require_agent_explorer_plugin(), 1);
+var import_use_text_selection = __toESM(require_dist(), 1);
+var import_antd10 = __toESM(require_antd(), 1);
 var import_jsx_runtime11 = __toESM(require_jsx_runtime(), 1);
 var getMarkdownComponents = () => {
   return {
     p(props) {
-      console.log(props);
-      return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { children: [
-        JSON.stringify(props.node?.position),
-        " ",
-        props.children
+      const { notification } = import_antd10.App.useApp();
+      const ref = import_react23.default.useRef(null);
+      const { clientRect, isCollapsed, textContent } = (0, import_use_text_selection.useTextSelection)(ref.current === null ? void 0 : ref.current);
+      const credential = props.node?.credential;
+      const { enabled, start, end } = import_react23.default.useMemo(() => {
+        let enabled2 = false;
+        let start2 = -1;
+        let end2 = -1;
+        const originalContent = String(props.children);
+        if (textContent) {
+          const index3 = originalContent.indexOf(textContent);
+          if (index3 >= 0) {
+            enabled2 = true;
+            start2 = props.node?.position?.start.offset || 0 + index3;
+            end2 = start2 + textContent.length;
+          }
+        }
+        return { enabled: enabled2, start: start2, end: end2 };
+      }, [textContent, props.children]);
+      const handleCopyReference = () => {
+        const reference = `\`\`\`vc+multihash
+${(0, import_agent_explorer_plugin9.getIssuerDID)(credential.verifiableCredential)}/${credential.hash}#${start}-${end}
+\`\`\``;
+        navigator.clipboard.writeText(reference);
+        notification.success({
+          message: "Credential reference copied to clipboard"
+        });
+      };
+      return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { style: { position: "relative" }, children: [
+        clientRect && !isCollapsed && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          "div",
+          {
+            style: {
+              left: 0,
+              top: -40,
+              position: "absolute",
+              backgroundColor: "black"
+            },
+            children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+              import_antd10.Button,
+              {
+                type: "primary",
+                disabled: !enabled,
+                onClick: handleCopyReference,
+                icon: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(PicLeftOutlined_default2, {}),
+                children: "Copy reference"
+              }
+            )
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { ref, children: props.children })
       ] });
     },
     pre(props) {
@@ -18158,10 +18369,10 @@ var getMarkdownComponents = () => {
 };
 
 // src/IdentifierHoverComponent.tsx
-var import_react23 = __toESM(require_react(), 1);
+var import_react24 = __toESM(require_react(), 1);
 var import_veramo_react9 = __toESM(require_veramo_react(), 1);
 var import_react_query9 = __toESM(require_react_query(), 1);
-var import_antd10 = __toESM(require_antd(), 1);
+var import_antd11 = __toESM(require_antd(), 1);
 var import_jsx_runtime12 = __toESM(require_jsx_runtime(), 1);
 var IdentifierHoverComponent = ({ did }) => {
   const { agent } = (0, import_veramo_react9.useVeramo)();
@@ -18175,16 +18386,16 @@ var IdentifierHoverComponent = ({ did }) => {
       order: [{ column: "issuanceDate", direction: "DESC" }]
     })
   );
-  const domain = import_react23.default.useMemo(() => {
+  const domain = import_react24.default.useMemo(() => {
     return credentials?.[0]?.verifiableCredential?.credentialSubject?.domain;
   }, [credentials, did]);
   if (isLoading) {
-    return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_antd10.Spin, {});
+    return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_antd11.Spin, {});
   }
   if (!domain) {
     return null;
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_antd10.Typography.Text, { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_antd11.Typography.Text, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(CheckCircleOutlined_default2, {}),
     " ",
     domain

@@ -1,15 +1,66 @@
 import React from 'react'
 import { normalizeCredential } from 'did-jwt-vc';
 import { computeEntryHash } from '@veramo/utils';
-import { VerifiableCredentialComponent, CredentialLoader } from '@veramo-community/agent-explorer-plugin'
+import { VerifiableCredentialComponent, CredentialLoader, getIssuerDID } from '@veramo-community/agent-explorer-plugin'
 import { Components } from 'react-markdown'
+import { useTextSelection } from 'use-text-selection'
+import { App, Button } from 'antd';
+import { PicLeftOutlined } from '@ant-design/icons';
 
 export const getMarkdownComponents = () : Partial<Components>  => {
 
   return {
     p(props) {
-      console.log(props)
-      return (<p>{JSON.stringify(props.node?.position)} {props.children}</p>)
+      const { notification } = App.useApp()
+      const ref = React.useRef(null)
+      const { clientRect, isCollapsed, textContent } = useTextSelection(ref.current === null ? undefined : ref.current)
+    
+      //@ts-ignore
+      const credential = props.node?.credential
+
+      const {enabled, start, end} = React.useMemo(() => {
+        let enabled = false
+        let start = -1
+        let end = -1
+        const originalContent = String(props.children)
+        if (textContent) {
+          const index = originalContent.indexOf(textContent)
+          
+          if (index >= 0) {
+            enabled = true
+            start = props.node?.position?.start.offset || 0 + index
+            end = start + textContent.length
+          }
+        }
+        return {enabled, start, end}
+      }, [textContent, props.children])
+
+      const handleCopyReference = () => {
+        const reference = `\`\`\`vc+multihash\n${getIssuerDID(credential.verifiableCredential)}/${credential.hash}#${start}-${end}\n\`\`\``
+        navigator.clipboard.writeText(reference)
+        notification.success({
+          message: 'Credential reference copied to clipboard',
+        })
+      }
+
+      return (<div style={{position: 'relative'}}>
+        {clientRect && !isCollapsed && <div
+        style={{
+          left: 0,
+          top: -40,
+          position: 'absolute',
+          backgroundColor: 'black',
+        }}
+      >
+        <Button 
+          type='primary' 
+          disabled={!enabled}
+          onClick={handleCopyReference}
+          icon={<PicLeftOutlined />}
+          >Copy reference</Button>
+      </div>}
+        <p ref={ref}>{props.children}</p>
+      </div>)
     },
     pre(props) {
       return (<>{props.children}</>)
@@ -46,3 +97,4 @@ export const getMarkdownComponents = () : Partial<Components>  => {
     }
   }
 }
+
