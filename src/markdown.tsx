@@ -28,7 +28,7 @@ export const getMarkdownComponents = () : Partial<Components>  => {
           
           if (index >= 0) {
             enabled = true
-            start = props.node?.position?.start.offset || 0 + index
+            start = (props.node?.position?.start.offset || 0) + index
             end = start + textContent.length
           }
         }
@@ -37,6 +37,7 @@ export const getMarkdownComponents = () : Partial<Components>  => {
 
       const handleCopyReference = () => {
         const reference = `\`\`\`vc+multihash\n${getIssuerDID(credential.verifiableCredential)}/${credential.hash}#${start}-${end}\n\`\`\``
+
         navigator.clipboard.writeText(reference)
         notification.success({
           message: 'Credential reference copied to clipboard',
@@ -80,13 +81,20 @@ export const getMarkdownComponents = () : Partial<Components>  => {
           const items = String(children).replace(/\s/g, '').split('/');
           let hash3 = '';
           let did = '';
+          let context = undefined
           if (items.length === 2) {
             did = items[0];
             hash3 = items[1];
           } else {
             hash3 = items[0];
           }
-          return <CredentialLoader hash={hash3} did={did} />
+          let textRange = undefined
+          const a = hash3.split('#')
+          if (a.length === 2) {
+            hash3 = a[0]
+            context = { textRange: a[1] }
+          }
+          return <CredentialLoader hash={hash3} did={did} context={context}/>
         default:
           return (
             <code {...rest} className={className}>

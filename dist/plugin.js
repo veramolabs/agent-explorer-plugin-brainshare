@@ -11518,10 +11518,10 @@ var LinkDomain = () => {
 // src/BrainSharePost.tsx
 var import_agent_explorer_plugin7 = __toESM(require_agent_explorer_plugin(), 1);
 var import_jsx_runtime8 = __toESM(require_jsx_runtime(), 1);
-var BrainSharePost = ({ credential }) => {
+var BrainSharePost = ({ credential, context }) => {
   return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
     credential.verifiableCredential.credentialSubject.title && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { children: credential.verifiableCredential.credentialSubject.title }),
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_agent_explorer_plugin7.MarkDown, { content: credential.verifiableCredential.credentialSubject.post, credential })
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_agent_explorer_plugin7.MarkDown, { content: credential.verifiableCredential.credentialSubject.post, credential, context })
   ] });
 };
 
@@ -18296,7 +18296,7 @@ var getMarkdownComponents = () => {
           const index3 = originalContent.indexOf(textContent);
           if (index3 >= 0) {
             enabled2 = true;
-            start2 = props.node?.position?.start.offset || 0 + index3;
+            start2 = (props.node?.position?.start.offset || 0) + index3;
             end2 = start2 + textContent.length;
           }
         }
@@ -18354,13 +18354,20 @@ ${(0, import_agent_explorer_plugin9.getIssuerDID)(credential.verifiableCredentia
           const items = String(children).replace(/\s/g, "").split("/");
           let hash32 = "";
           let did = "";
+          let context = void 0;
           if (items.length === 2) {
             did = items[0];
             hash32 = items[1];
           } else {
             hash32 = items[0];
           }
-          return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_agent_explorer_plugin9.CredentialLoader, { hash: hash32, did });
+          let textRange = void 0;
+          const a2 = hash32.split("#");
+          if (a2.length === 2) {
+            hash32 = a2[0];
+            context = { textRange: a2[1] };
+          }
+          return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_agent_explorer_plugin9.CredentialLoader, { hash: hash32, did, context });
         default:
           return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("code", { ...rest, className, children });
       }
