@@ -11499,6 +11499,26 @@ ${(0, import_agent_explorer_plugin7.getIssuerDID)(credential.verifiableCredentia
       message: "Credential wikilink copied to clipboard"
     });
   };
+  const defaultItems = [
+    {
+      key: "copy-wiki",
+      label: "Copy wiki link",
+      icon: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LinkOutlined_default2, {}),
+      onClick: handleCopyWikilink
+    },
+    {
+      key: "embed",
+      label: "Copy embed",
+      icon: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(PicLeftOutlined_default2, {}),
+      onClick: handleCopyEmbed
+    },
+    {
+      key: "reference",
+      label: "Copy reference",
+      icon: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(PicLeftOutlined_default2, {}),
+      onClick: handleCopyReference
+    }
+  ];
   if (credential.verifiableCredential.type?.includes("BrainSharePost")) {
     return [
       {
@@ -11513,27 +11533,10 @@ ${(0, import_agent_explorer_plugin7.getIssuerDID)(credential.verifiableCredentia
         icon: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(EditOutlined_default2, {}),
         onClick: () => navigate("/brainshare/edit/" + credential.hash)
       },
-      {
-        key: "copy-wiki",
-        label: "Copy wiki link",
-        icon: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LinkOutlined_default2, {}),
-        onClick: handleCopyWikilink
-      },
-      {
-        key: "embed",
-        label: "Copy embed",
-        icon: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(PicLeftOutlined_default2, {}),
-        onClick: handleCopyEmbed
-      },
-      {
-        key: "reference",
-        label: "Copy reference",
-        icon: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(PicLeftOutlined_default2, {}),
-        onClick: handleCopyReference
-      }
+      ...defaultItems
     ];
   }
-  return void 0;
+  return defaultItems;
 };
 
 // src/Edit.tsx
