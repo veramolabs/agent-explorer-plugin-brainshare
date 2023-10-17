@@ -35,7 +35,7 @@ export const Landing: React.FC<{ did: string }> = ({
         
         const indexMap = index.credentialSubject.index
         if (indexMap['bs-sidebar']) {
-          const sidebarHash = indexMap['bs-sidebar'][0]
+          const sidebarHash = indexMap['bs-sidebar'][indexMap['bs-sidebar'].length - 1]
           console.log("sidebarHash: ", sidebarHash)
           
           const sidebar = await getPost(agent, did, sidebarHash)
