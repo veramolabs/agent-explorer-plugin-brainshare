@@ -3103,6 +3103,7 @@ async function getPostByTitle(agent, localAgent, did, title) {
         };
         const packedMessage = await localAgent?.packDIDCommMessage({ message: requestCredMessage, packing: "authcrypt" });
         const { returnMessage } = await localAgent.sendDIDCommMessage({ packedMessage, messageId: requestCredMessage.id, recipientDidUrl: did });
+        console.log({ returnMessage });
         await localAgent.didManagerDelete({ did: temporarySender.did });
         if (returnMessage?.data) {
           return returnMessage?.data;
@@ -3488,8 +3489,15 @@ ${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredentia
       message: "Credential reference copied to clipboard"
     });
   };
-  const handleCopyWikilink = () => {
-    const wikilink = credential.verifiableCredential.credentialSubject.title ? `[[${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.hash}|${credential.verifiableCredential.credentialSubject.title}]]` : `[[${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.hash}]]`;
+  const handleCopylink = () => {
+    const wikilink = credential.verifiableCredential.credentialSubject.title ? `[${credential.verifiableCredential.credentialSubject.title}](${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.verifiableCredential.credentialSubject.title})` : `[Credential](${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.hash})`;
+    navigator.clipboard.writeText(wikilink);
+    notification.success({
+      message: "Credential wikilink copied to clipboard"
+    });
+  };
+  const handleCopyPermalink = () => {
+    const wikilink = credential.verifiableCredential.credentialSubject.title ? `[${credential.verifiableCredential.credentialSubject.title}](${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.hash})` : `[Credential](${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.hash})`;
     navigator.clipboard.writeText(wikilink);
     notification.success({
       message: "Credential wikilink copied to clipboard"
@@ -3498,9 +3506,15 @@ ${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredentia
   const defaultItems = [
     {
       key: "copy-wiki",
-      label: "Copy wiki link",
+      label: "Copy link",
       icon: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(LinkOutlined_default2, {}),
-      onClick: handleCopyWikilink
+      onClick: handleCopylink
+    },
+    {
+      key: "copy-permalink",
+      label: "Copy permalink",
+      icon: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(LinkOutlined_default2, {}),
+      onClick: handleCopyPermalink
     },
     {
       key: "embed",

@@ -82,6 +82,7 @@ export async function getPostByTitle(
         }
         const packedMessage = await localAgent?.packDIDCommMessage({ message: requestCredMessage, packing: 'authcrypt' })
         const { returnMessage } = await localAgent.sendDIDCommMessage({ packedMessage: packedMessage!, messageId: requestCredMessage.id, recipientDidUrl: did! })
+        console.log({returnMessage})
         await localAgent.didManagerDelete({ did: temporarySender.did })
         if (returnMessage?.data) {
           return returnMessage?.data as UniqueVerifiableCredential

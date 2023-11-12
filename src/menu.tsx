@@ -30,10 +30,11 @@ export const getCredentialContextMenuItems = (credential: UniqueVerifiableCreden
     })
   }
 
-  const handleCopyWikilink = () => {
+  const handleCopylink = () => {
     const wikilink = credential.verifiableCredential.credentialSubject.title ? 
-      `[[${getIssuerDID(credential.verifiableCredential)}/${credential.hash}|${credential.verifiableCredential.credentialSubject.title}]]`
-      : `[[${getIssuerDID(credential.verifiableCredential)}/${credential.hash}]]`
+      `[${credential.verifiableCredential.credentialSubject.title}](${getIssuerDID(credential.verifiableCredential)}/${credential.verifiableCredential.credentialSubject.title})`
+      : `[Credential](${getIssuerDID(credential.verifiableCredential)}/${credential.hash})`
+      
     
     navigator.clipboard.writeText(wikilink)
     notification.success({
@@ -41,12 +42,29 @@ export const getCredentialContextMenuItems = (credential: UniqueVerifiableCreden
     })
   }
   
+  const handleCopyPermalink = () => {
+    const wikilink = credential.verifiableCredential.credentialSubject.title ? 
+      `[${credential.verifiableCredential.credentialSubject.title}](${getIssuerDID(credential.verifiableCredential)}/${credential.hash})`
+      : `[Credential](${getIssuerDID(credential.verifiableCredential)}/${credential.hash})`
+      
+    
+    navigator.clipboard.writeText(wikilink)
+    notification.success({
+      message: 'Credential wikilink copied to clipboard',
+    })
+  }
   const defaultItems = [
     {
       key: 'copy-wiki',
-      label: 'Copy wiki link',
+      label: 'Copy link',
       icon: <LinkOutlined />,
-      onClick: handleCopyWikilink,
+      onClick: handleCopylink,
+    },
+    {
+      key: 'copy-permalink',
+      label: 'Copy permalink',
+      icon: <LinkOutlined />,
+      onClick: handleCopyPermalink,
     },
     {
       key: 'embed',
