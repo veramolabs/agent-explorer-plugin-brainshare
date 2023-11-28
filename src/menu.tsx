@@ -29,6 +29,15 @@ export const getCredentialContextMenuItems = (credential: UniqueVerifiableCreden
       message: 'Credential reference copied to clipboard',
     })
   }
+  
+  const handleCopyNamedReference = () => {
+    const reference = `\`\`\`vc+reference\n${getIssuerDID(credential.verifiableCredential)}/${credential.verifiableCredential.credentialSubject.title}\n\`\`\``
+    
+    navigator.clipboard.writeText(reference)
+    notification.success({
+      message: 'Credential reference copied to clipboard',
+    })
+  }
 
   const handleCopylink = () => {
     const wikilink = credential.verifiableCredential.credentialSubject.title ? 
@@ -77,6 +86,12 @@ export const getCredentialContextMenuItems = (credential: UniqueVerifiableCreden
       label: 'Copy reference',
       icon: <PicLeftOutlined />,
       onClick: handleCopyReference,
+    },
+    {
+      key: 'named-reference',
+      label: 'Copy Named Reference',
+      icon: <PicLeftOutlined />,
+      onClick: handleCopyNamedReference,
     },
   ]
 

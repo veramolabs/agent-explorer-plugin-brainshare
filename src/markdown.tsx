@@ -96,6 +96,24 @@ export const getMarkdownComponents = () : Partial<Components>  => {
             context = { textRange: a[1] }
           }
           return <CredentialLoader hash={hash3} did={did} context={context}/>
+        case 'language-vc+reference':
+            const items2 = String(children).replace(/\s/g, '').split('/');
+            let title = '';
+            let did2 = '';
+            let context2 = undefined
+            if (items2.length === 2) {
+              did2 = items2[0];
+              title = items2[1];
+            } else {
+              title = items2[0];
+            }
+            let textRange2 = undefined
+            const b = title.split('#')
+            if (b.length === 2) {
+              title = b[0]
+              context2 = { textRange: b[1] }
+            }
+            return <CredentialLoader title={title} did={did2} context={context2}/>
         default:
           return (
             <code {...rest} className={className}>

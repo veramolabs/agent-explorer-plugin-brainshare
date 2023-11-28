@@ -3489,6 +3489,15 @@ ${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredentia
       message: "Credential reference copied to clipboard"
     });
   };
+  const handleCopyNamedReference = () => {
+    const reference = `\`\`\`vc+reference
+${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.verifiableCredential.credentialSubject.title}
+\`\`\``;
+    navigator.clipboard.writeText(reference);
+    notification.success({
+      message: "Credential reference copied to clipboard"
+    });
+  };
   const handleCopylink = () => {
     const wikilink = credential.verifiableCredential.credentialSubject.title ? `[${credential.verifiableCredential.credentialSubject.title}](${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.verifiableCredential.credentialSubject.title})` : `[Credential](${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredential)}/${credential.hash})`;
     navigator.clipboard.writeText(wikilink);
@@ -3527,6 +3536,12 @@ ${(0, import_agent_explorer_plugin8.getIssuerDID)(credential.verifiableCredentia
       label: "Copy reference",
       icon: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(PicLeftOutlined_default2, {}),
       onClick: handleCopyReference
+    },
+    {
+      key: "named-reference",
+      label: "Copy Named Reference",
+      icon: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(PicLeftOutlined_default2, {}),
+      onClick: handleCopyNamedReference
     }
   ];
   if (credential.verifiableCredential.type?.includes("BrainSharePost")) {
@@ -11039,7 +11054,7 @@ var import_veramo_react7 = __toESM(require_veramo_react(), 1);
 var import_antd11 = __toESM(require_antd(), 1);
 var import_react22 = __toESM(require_react(), 1);
 var import_jsx_runtime12 = __toESM(require_jsx_runtime(), 1);
-var CredentialLoader = ({ hash: hash3, did, context }) => {
+var CredentialLoader = ({ hash: hash3, title, did, context }) => {
   const [credential, setCredential] = (0, import_react22.useState)();
   const { agents, agent } = (0, import_veramo_react7.useVeramo)();
   const [error, setError] = (0, import_react22.useState)(void 0);
@@ -11053,7 +11068,17 @@ var CredentialLoader = ({ hash: hash3, did, context }) => {
   (0, import_react22.useEffect)(() => {
     const load = async () => {
       try {
-        const postCredential = await getPost(agent, localAgent, hash3, did);
+        let postCredential;
+        if (!did) {
+          throw new Error("no DID found on post");
+        }
+        if (hash3) {
+          postCredential = await getPost(agent, localAgent, hash3, did);
+        } else if (title) {
+          postCredential = await getPostByTitle(agent, localAgent, did, title);
+        } else {
+          throw new Error("Cannot load post without either hash or title");
+        }
         if (postCredential.verifiableCredential) {
           setCredential(postCredential);
         } else {
@@ -11064,7 +11089,7 @@ var CredentialLoader = ({ hash: hash3, did, context }) => {
       }
     };
     load();
-  }, [agent, hash3]);
+  }, [agent, hash3, title]);
   if (error) {
     return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_antd11.Typography.Text, { type: "danger", children: error });
   }
@@ -11161,6 +11186,24 @@ ${(0, import_agent_explorer_plugin10.getIssuerDID)(credential.verifiableCredenti
             context = { textRange: a[1] };
           }
           return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CredentialLoader, { hash: hash32, did, context });
+        case "language-vc+reference":
+          const items2 = String(children).replace(/\s/g, "").split("/");
+          let title = "";
+          let did2 = "";
+          let context2 = void 0;
+          if (items2.length === 2) {
+            did2 = items2[0];
+            title = items2[1];
+          } else {
+            title = items2[0];
+          }
+          let textRange2 = void 0;
+          const b = title.split("#");
+          if (b.length === 2) {
+            title = b[0];
+            context2 = { textRange: b[1] };
+          }
+          return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CredentialLoader, { title, did: did2, context: context2 });
         default:
           return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("code", { ...rest, className, children });
       }

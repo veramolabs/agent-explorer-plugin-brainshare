@@ -3,10 +3,10 @@ import { useVeramo } from "@veramo-community/veramo-react"
 import { UniqueVerifiableCredential, IDataStore, IDataStoreORM, IDIDManager, IResolver } from "@veramo/core-types"
 import { Spin, Typography } from "antd"
 import React, { useState, useEffect } from "react"
-import { getPost } from "./didcommUtils"
+import { getPost, getPostByTitle } from "./didcommUtils"
 import { IDIDComm } from "@veramo/did-comm"
 
-export const CredentialLoader = ({ hash, did, context } : { hash: string, did?: string, context?: any }) => {
+export const CredentialLoader = ({ hash, title, did, context } : { hash?: string, title?: string, did?: string, context?: any }) => {
   
   const [credential, setCredential] = useState<UniqueVerifiableCredential>()
   const { agents, agent } = useVeramo<IDataStore & IDataStoreORM & IDIDComm & IDIDManager & IResolver>()
@@ -22,7 +22,17 @@ export const CredentialLoader = ({ hash, did, context } : { hash: string, did?: 
   useEffect(() => {
     const load = async () => {
       try {
-        const postCredential = await getPost(agent, localAgent, hash, did)
+        let postCredential
+        if (!did) {
+          throw new Error("no DID found on post")
+        }
+        if (hash) {
+          postCredential = await getPost(agent, localAgent, hash, did)
+        } else if (title) {
+          postCredential = await getPostByTitle(agent, localAgent, did, title)
+        } else {
+          throw new Error('Cannot load post without either hash or title')
+        }
         if (postCredential.verifiableCredential) {
           setCredential(postCredential)
         } else {
@@ -34,7 +44,7 @@ export const CredentialLoader = ({ hash, did, context } : { hash: string, did?: 
     }
 
     load()
-  }, [agent, hash])
+  }, [agent, hash, title])
   
   if (error) {
     return <Typography.Text type='danger'>{error}</Typography.Text>
