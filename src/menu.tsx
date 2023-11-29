@@ -101,13 +101,42 @@ export const getCredentialContextMenuItems = (credential: UniqueVerifiableCreden
         key: 'open',
         label: 'Open post',
         icon: <FileSearchOutlined />,
-        onClick: () => navigate('/brainshare/' + getIssuerDID(credential.verifiableCredential)+ '/' + credential.hash),
+        onClick: () => {
+          if (credential.verifiableCredential.credentialSubject.title) {
+            navigate('/brainshare/' + getIssuerDID(credential.verifiableCredential)+ '/' + credential.verifiableCredential.credentialSubject.title)
+          } else {
+            navigate('/brainshare/' + getIssuerDID(credential.verifiableCredential)+ '/' + credential.hash)
+          }
+        }
       },
       {
         key: 'edit',
         label: 'New revision',
         icon: <EditOutlined />,
         onClick: () => navigate('/brainshare/edit/' + credential.hash),
+      },
+      ...defaultItems
+    ]
+  } 
+  if (credential.verifiableCredential.type?.includes('BrainShareDiagram')){
+    return [
+      {
+        key: 'open',
+        label: 'Open post',
+        icon: <FileSearchOutlined />,
+        onClick: () => {
+          if (credential.verifiableCredential.credentialSubject.title) {
+            navigate('/brainshare/' + getIssuerDID(credential.verifiableCredential)+ '/' + credential.verifiableCredential.credentialSubject.title)
+          } else {
+            navigate('/brainshare/' + getIssuerDID(credential.verifiableCredential)+ '/' + credential.hash)
+          }
+        }
+      },
+      {
+        key: 'edit',
+        label: 'New revision',
+        icon: <EditOutlined />,
+        onClick: () => navigate('/brainshare/edit-diagram/' + credential.hash),
       },
       ...defaultItems
     ]

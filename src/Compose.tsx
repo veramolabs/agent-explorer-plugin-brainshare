@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { PageContainer } from '@ant-design/pro-components'
-import { App } from 'antd'
+import { App, Tabs } from 'antd'
 
 import { PostForm } from './PostForm.js'
+import { DiagramForm } from './DiagramForm.js'
 
 export const Compose = () => {
   const { notification } = App.useApp()
@@ -23,7 +24,24 @@ export const Compose = () => {
       title={false}
       style={{paddingTop: 10}}
       >
-      <PostForm onOk={handleNewPost} initialTitle={title} />
+      <Tabs
+        items={[
+          {
+            key: '1',
+            label: 'Create Post',
+            children: (
+              <PostForm onOk={handleNewPost} initialTitle={title} />
+            )
+          },
+          {
+            key: '2',
+            label: 'Create Diagram',
+            children: (
+              <DiagramForm onOk={handleNewPost} initialTitle={title} />
+            )
+          }
+        ]}
+      />
     </PageContainer>
   )
 }

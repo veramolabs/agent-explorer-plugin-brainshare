@@ -70,6 +70,7 @@ export async function getPostByTitle(
     if (didDocument?.service?.find((service) => service.type === "DIDCommMessaging")) {
       const temporarySender = await localAgent.didManagerCreate({provider: "did:key"})
       if (temporarySender) {
+        console.log("find post with title: ", title)
         const requestCredMessage = {
           type: 'https://veramo.io/didcomm/brainshare/1.0/request-post',
           from: temporarySender.did,
@@ -91,7 +92,7 @@ export async function getPostByTitle(
     }
   }
 
-  const credentials = await agent.dataStoreORMGetVerifiableCredentialsByClaims({ 
+  const credentials = (await agent.dataStoreORMGetVerifiableCredentialsByClaims({ 
     where: [
       { column: 'credentialType', value: ['VerifiableCredential,BrainSharePost'] },
       { column: 'issuer', value: [did] },
@@ -100,7 +101,22 @@ export async function getPostByTitle(
     ],
     order: [{ column: 'issuanceDate', direction: 'DESC' }],
     take: 1
-  })
-  return credentials[0]
+  }))
+  if (credentials && credentials.length > 0) {
+    return credentials[0]
+  }
+  
+  const credentials2 =
+    await agent.dataStoreORMGetVerifiableCredentialsByClaims({ 
+      where: [
+        { column: 'credentialType', value: ['VerifiableCredential,BrainShareDiagram'] },
+        { column: 'issuer', value: [did] },
+        { column: 'type', value: ['title'] },
+        { column: 'value', value: [title] },
+      ],
+      order: [{ column: 'issuanceDate', direction: 'DESC' }],
+      take: 1
+    })
+  return credentials2[0]
 
 }

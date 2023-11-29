@@ -17,6 +17,8 @@ import { IdentifierHoverComponent } from './IdentifierHoverComponent.js';
 import { Landing } from './Landing';
 import { Compose } from './Compose';
 import remarkPlugin from './remark-plugin';
+import { BrainShareDiagram } from './BrainShareDiagram.js';
+import { EditDiagram } from './EditDiagram.js';
 
 const Plugin: IPlugin = {
   //@ts-ignore
@@ -56,6 +58,10 @@ const Plugin: IPlugin = {
               element: <Edit />,
             },
             {
+              path: '/brainshare/edit-diagram/:id',
+              element: <EditDiagram />,
+            },
+            {
               path: '/brainshare/compose/:title',
               element: <Compose />,
             },
@@ -90,6 +96,8 @@ const Plugin: IPlugin = {
           getCredentialComponent: (credential: UniqueVerifiableCredential) => {
             if (credential.verifiableCredential.type?.includes('BrainSharePost')) {
               return BrainSharePost
+            } else if (credential.verifiableCredential.type?.includes('BrainShareDiagram')) {
+              return BrainShareDiagram
             }
             return undefined
           },

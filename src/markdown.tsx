@@ -24,6 +24,8 @@ export const getMarkdownComponents = () : Partial<Components>  => {
         let start = -1
         let end = -1
         const originalContent = String(props.children)
+        console.log("highlight props: ", props)
+        console.log("textContent: ", textContent)
         if (textContent) {
           const index = originalContent.indexOf(textContent)
           
@@ -97,7 +99,8 @@ export const getMarkdownComponents = () : Partial<Components>  => {
           }
           return <CredentialLoader hash={hash3} did={did} context={context}/>
         case 'language-vc+reference':
-            const items2 = String(children).replace(/\s/g, '').split('/');
+          console.log("reference found.")
+            const items2 = String(children).split('/');
             let title = '';
             let did2 = '';
             let context2 = undefined
@@ -113,7 +116,8 @@ export const getMarkdownComponents = () : Partial<Components>  => {
               title = b[0]
               context2 = { textRange: b[1] }
             }
-            return <CredentialLoader title={title} did={did2} context={context2}/>
+            console.log("title: ", title)
+            return <CredentialLoader title={title.trim()} did={did2} context={context2}/>
         default:
           return (
             <code {...rest} className={className}>
