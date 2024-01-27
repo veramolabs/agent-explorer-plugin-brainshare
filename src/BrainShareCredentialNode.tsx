@@ -9,6 +9,8 @@ const CustomNode = ({
   targetPosition = Position.Top,
   sourcePosition = Position.Bottom
 }: NodeProps) => {
+    const did = data.file.split('/')[0]
+    const title = data.file.split('/')[1]
   return (
     <>
       <Handle
@@ -16,7 +18,7 @@ const CustomNode = ({
         position={targetPosition}
         isConnectable={isConnectable}
       />
-      <CredentialLoader title={data.title} did={data.did}  />
+      <CredentialLoader title={title} did={did}  />
       <Handle
         type="source"
         position={sourcePosition}

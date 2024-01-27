@@ -10504,6 +10504,8 @@ var CustomNode = ({
   targetPosition = Position.Top,
   sourcePosition = Position.Bottom
 }) => {
+  const did = data.file.split("/")[0];
+  const title = data.file.split("/")[1];
   return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
       Handle$1,
@@ -10513,7 +10515,7 @@ var CustomNode = ({
         isConnectable
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(CredentialLoader, { title: data.title, did: data.did }),
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(CredentialLoader, { title, did }),
     /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
       Handle$1,
       {
@@ -10550,19 +10552,18 @@ var BrainShareDiagram = ({ credential, context }) => {
       return {
         id: node.id,
         type: node.type,
-        position: { x: node.x, y: node.y },
-        data: { credential: node.file }
+        position: { x: node.x / 100, y: node.y / 100 },
+        data: { file: node.file }
       };
     }
   });
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { style: { marginTop: token.margin, height: "300px" }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { style: { marginTop: token.margin, height: "3000px" }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
     ReactFlow,
     {
       nodes,
       onNodesChange,
       nodeTypes,
-      fitView: true,
       children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Background$1, {})
     }
   ) });

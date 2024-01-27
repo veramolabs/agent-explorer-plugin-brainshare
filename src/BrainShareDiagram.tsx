@@ -41,8 +41,8 @@ export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential
       return {
         id: node.id,
         type: node.type,
-        position: { x: node.x, y: node.y },
-        data: { credential: node.file }
+        position: { x: node.x / 100, y: node.y / 100 },
+        data: { file: node.file }
       }
 
     }
@@ -56,7 +56,7 @@ export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential
   //   (params: Edge | Connection) => setEdges((els) => addEdge(params, els)),
   //   [setEdges]
   // );
-  return <div style={{marginTop: token.margin, height: '300px'}}>
+  return <div style={{marginTop: token.margin, height: '3000px'}}>
     <ReactFlow
       nodes={nodes}
       // edges={edges}
@@ -64,7 +64,8 @@ export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential
       // onEdgesChange={onEdgesChange}
       // onConnect={onConnect}
       nodeTypes={nodeTypes}
-      fitView={true}
+      // fitView={true}
+      // defaultViewport={{ x: 0, y: 0, zoom: 1}}
     >
       <Background />
     </ReactFlow>
