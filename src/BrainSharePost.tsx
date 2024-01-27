@@ -3,11 +3,16 @@ import { UniqueVerifiableCredential } from "@veramo/core";
 import { MarkDown } from "@veramo-community/agent-explorer-plugin";
 import { Tag, Typography, theme } from "antd";
 import { systemTitles } from "./api";
+import { BrainShareDiagram } from "./BrainShareDiagram.js";
 
 export const BrainSharePost: React.FC<{credential: UniqueVerifiableCredential, context?: any}> = ({ credential, context }) => {
   const { token } = theme.useToken()
-  const { title, post } = credential.verifiableCredential.credentialSubject
+  const { title, post, canvas } = credential.verifiableCredential.credentialSubject
   
+  if (canvas) {
+    return <BrainShareDiagram credential={credential}/>
+  }
+
   return <div style={{marginTop: token.margin}}>
     {context?.hideTitle !== true && title && !systemTitles.includes(title) && !context?.textRange && <h2>{title}</h2>}
     {context?.hideTitle !== true && title && !systemTitles.includes(title) && context?.textRange && <Typography.Text type='secondary'>{title}</Typography.Text>}

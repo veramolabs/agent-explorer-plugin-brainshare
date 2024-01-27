@@ -96,8 +96,6 @@ const Plugin: IPlugin = {
           getCredentialComponent: (credential: UniqueVerifiableCredential) => {
             if (credential.verifiableCredential.type?.includes('BrainSharePost')) {
               return BrainSharePost
-            } else if (credential.verifiableCredential.type?.includes('BrainShareDiagram')) {
-              return BrainShareDiagram
             }
             return undefined
           },

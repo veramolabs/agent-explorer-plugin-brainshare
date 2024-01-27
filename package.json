@@ -42,6 +42,7 @@
 	},
 	"dependencies": {
 		"@monaco-editor/react": "^4.6.0",
+		"@visx/network": "^3.3.0",
 		"ethers": "^6.8.0",
 		"reactflow": "^11.10.1",
 		"remark-parse": "^11.0.0",
