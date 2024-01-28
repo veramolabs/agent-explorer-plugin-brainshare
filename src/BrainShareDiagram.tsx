@@ -23,8 +23,8 @@ const nodeTypes = {
 export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential, context?: any}> = ({ credential, context }) => {
   const { token } = theme.useToken()
   const { canvas } = credential.verifiableCredential.credentialSubject
-  console.log("nodes: ", canvas.nodes)
-  console.log("edges: ", canvas.edges)
+  // console.log("nodes: ", canvas.nodes)
+  // console.log("edges: ", canvas.edges)
 
   const initialNodes = canvas.nodes.map((node: any) => {
     // console.log("node: ", node)
@@ -37,11 +37,11 @@ export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential
       }
 
     } else {
-      console.log("credential node: ", node)
+      // console.log("credential node: ", node)
       return {
         id: node.id,
         type: node.type,
-        position: { x: node.x / 100, y: node.y / 100 },
+        position: { x: node.x, y: node.y },
         data: { file: node.file }
       }
 
@@ -50,24 +50,26 @@ export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential
 
 
 
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
+  // const [nodes, , onNodesChange] = useNodesState(initialNodes);
   // const [edges, setEdges, onEdgesChange] = useEdgesState(JSON.parse(canvas.edges));
   // const onConnect = useCallback(
   //   (params: Edge | Connection) => setEdges((els) => addEdge(params, els)),
   //   [setEdges]
   // );
-  return <div style={{marginTop: token.margin, height: '3000px'}}>
+
+  console.log("nodes: ", initialNodes)
+
+  return <div style={{width: '100vh', height: '100vh'}} onClick={() => console.log("clicked.")}>
     <ReactFlow
-      nodes={nodes}
+      nodes={initialNodes}
       // edges={edges}
-      onNodesChange={onNodesChange}
+      // onNodesChange={onNodesChange}
       // onEdgesChange={onEdgesChange}
       // onConnect={onConnect}
       nodeTypes={nodeTypes}
-      // fitView={true}
+      fitView
+      minZoom={.1}
       // defaultViewport={{ x: 0, y: 0, zoom: 1}}
-    >
-      <Background />
-    </ReactFlow>
+    />
     </div>
 }

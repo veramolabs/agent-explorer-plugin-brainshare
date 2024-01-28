@@ -10537,8 +10537,6 @@ var nodeTypes = {
 var BrainShareDiagram = ({ credential, context }) => {
   const { token } = import_antd5.theme.useToken();
   const { canvas } = credential.verifiableCredential.credentialSubject;
-  console.log("nodes: ", canvas.nodes);
-  console.log("edges: ", canvas.edges);
   const initialNodes = canvas.nodes.map((node) => {
     if (node.type === "text") {
       return {
@@ -10548,23 +10546,22 @@ var BrainShareDiagram = ({ credential, context }) => {
         data: { label: node.text }
       };
     } else {
-      console.log("credential node: ", node);
       return {
         id: node.id,
         type: node.type,
-        position: { x: node.x / 100, y: node.y / 100 },
+        position: { x: node.x, y: node.y },
         data: { file: node.file }
       };
     }
   });
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { style: { marginTop: token.margin, height: "3000px" }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+  console.log("nodes: ", initialNodes);
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { style: { width: "100vh", height: "100vh" }, onClick: () => console.log("clicked."), children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
     ReactFlow,
     {
-      nodes,
-      onNodesChange,
+      nodes: initialNodes,
       nodeTypes,
-      children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Background$1, {})
+      fitView: true,
+      minZoom: 0.1
     }
   ) });
 };
@@ -10575,6 +10572,7 @@ var BrainSharePost = ({ credential, context }) => {
   const { token } = import_antd6.theme.useToken();
   const { title, post, canvas } = credential.verifiableCredential.credentialSubject;
   if (canvas) {
+    console.log("yes canvas. show react flow test.");
     return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(BrainShareDiagram, { credential });
   }
   return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { style: { marginTop: token.margin }, children: [
