@@ -12,19 +12,19 @@ const CustomNode = ({
     const did = data.file.split('/')[0]
     const title = data.file.split('/')[1]
   return (
-    <>
-      <Handle
-        type="target"
-        position={targetPosition}
-        isConnectable={isConnectable}
-      />
-      <CredentialLoader title={title} did={did}  />
-      <Handle
-        type="source"
-        position={sourcePosition}
-        isConnectable={isConnectable}
-      />
-    </>
+    <div style={{maxWidth: '400px'}}>
+        <Handle
+            type="target"
+            position={targetPosition}
+            isConnectable={isConnectable}
+        />
+            <CredentialLoader title={title} did={did}  />
+        <Handle
+            type="source"
+            position={sourcePosition}
+            isConnectable={isConnectable}
+        />
+    </div>
   );
 };
 

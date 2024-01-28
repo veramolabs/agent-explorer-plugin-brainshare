@@ -8,7 +8,8 @@ import ReactFlow, {
   Edge,
   Connection,
   useNodesState,
-  useEdgesState
+  useEdgesState,
+  useViewport
 } from "reactflow";
 import { Tag, Typography, theme } from "antd";
 import { systemTitles } from "./api";
@@ -16,9 +17,12 @@ import { systemTitles } from "./api";
 import "./styles.css";
 import "reactflow/dist/style.css";
 import BrainShareCredentialNode from "./BrainShareCredentialNode.js";
+import { DebugFlow } from "./DebugFlow.js";
+import BrainShareTextNode from "./BrainShareTextNode.js";
 
 const nodeTypes = {
-  Credential: BrainShareCredentialNode
+  Credential: BrainShareCredentialNode,
+  text: BrainShareTextNode
 };
 export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential, context?: any}> = ({ credential, context }) => {
   const { token } = theme.useToken()
@@ -26,14 +30,28 @@ export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential
   // console.log("nodes: ", canvas.nodes)
   // console.log("edges: ", canvas.edges)
 
+  let minX = 100000
+  let minY = 100000
+  canvas.nodes.forEach((node: any) => {
+    if (node.x < minX) {
+      minX = node.x
+    }
+    if (node.y < minY) {
+      minY = node.y
+    }
+  })
+  console.log("minX: ", minX)
+  console.log("minY: ", minY)
+
   const initialNodes = canvas.nodes.map((node: any) => {
     // console.log("node: ", node)
     if (node.type === 'text') {
       return {
         id: node.id,
-        type: 'input',
-        position: { x: node.x, y: node.y },
-        data: { label: node.text }
+        type: 'text',
+        position: { x: node.x - minX, y: node.y - minY },
+        data: { label: node.text },
+        height: 100
       }
 
     } else {
@@ -41,10 +59,21 @@ export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential
       return {
         id: node.id,
         type: node.type,
-        position: { x: node.x, y: node.y },
-        data: { file: node.file }
+        // type: 'input',
+        position: { x: node.x - minX, y: node.y - minY },
+        data: { file: node.file },
+        height: 100
       }
 
+    }
+  })
+
+  const initialEdges = canvas.edges.map((edge: any) => {
+    return {
+      id: edge.id,
+      source: edge.fromNode,
+      target: edge.toNode,
+      label: edge.label
     }
   })
 
@@ -58,18 +87,23 @@ export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential
   // );
 
   console.log("nodes: ", initialNodes)
+  console.log("edges: ", initialEdges)
 
-  return <div style={{width: '100vh', height: '100vh'}} onClick={() => console.log("clicked.")}>
+
+  return <div style={{width: '100vw', height: '100vh', backgroundColor: 'gray'}} onClick={() => console.log("clicked.")}>
     <ReactFlow
       nodes={initialNodes}
-      // edges={edges}
+      edges={initialEdges}
       // onNodesChange={onNodesChange}
       // onEdgesChange={onEdgesChange}
       // onConnect={onConnect}
       nodeTypes={nodeTypes}
-      fitView
+      // fitView
       minZoom={.1}
-      // defaultViewport={{ x: 0, y: 0, zoom: 1}}
-    />
+      // onLoad={onLoad}
+      defaultViewport={{ x: -522, y: -225, zoom: .15}}
+    >
+      <DebugFlow />
+    </ReactFlow>
     </div>
 }
