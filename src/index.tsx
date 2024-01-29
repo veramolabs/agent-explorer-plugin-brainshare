@@ -22,97 +22,97 @@ import { EditDiagram } from './EditDiagram.js';
 
 const Plugin: IPlugin = {
   //@ts-ignore
-    init: () => {
-        return {
-          name: 'BrainShare',
-          description: 'Decentralized wiki',
+  init: () => {
+    return {
+      name: 'BrainShare',
+      description: 'Decentralized wiki',
+      icon: <FileTextOutlined />,
+      requiredMethods: [],
+      routes: [
+        {
+          path: '/brainshare/feed',
+          element: <Feed />,
+        },
+        {
+          path: '/brainshare/wiki/:did',
+          element: <Home />,
+        },
+        {
+          path: '/brainshare/wiki/:did/:hash',
+          element: <Home />,
+        },
+        {
+          path: '/brainshare/:id',
+          element: <Post />,
+        },
+        {
+          path: '/brainshare/:did/:id',
+          element: <Post />,
+        },
+        {
+          path: '/brainshare/link-domain',
+          element: <LinkDomain />,
+        },
+        {
+          path: '/brainshare/edit/:id',
+          element: <Edit />,
+        },
+        {
+          path: '/brainshare/edit-diagram/:id',
+          element: <EditDiagram />,
+        },
+        {
+          path: '/brainshare/compose/:title',
+          element: <Compose />,
+        },
+        {
+          path: '/brainshare/compose',
+          element: <Compose />,
+        },
+      ],
+      menuItems: [
+        {
+          name: "BrainShare",
           icon: <FileTextOutlined />,
-          requiredMethods: [],
+          path: '/brainshare',
           routes: [
             {
-              path: '/brainshare/feed',
-              element: <Feed />,
-            },
-            {
-              path: '/brainshare/wiki/:did',
-              element: <Home />,
-            },
-            {
-              path: '/brainshare/wiki/:did/:hash',
-              element: <Home />,
-            },
-            {
-              path: '/brainshare/:id',
-              element: <Post />,
-            },
-            {
-              path: '/brainshare/:did/:id',
-              element: <Post />,
-            },
-            {
-              path: '/brainshare/link-domain',
-              element: <LinkDomain />,
-            },
-            {
-              path: '/brainshare/edit/:id',
-              element: <Edit />,
-            },
-            {
-              path: '/brainshare/edit-diagram/:id',
-              element: <EditDiagram />,
-            },
-            {
-              path: '/brainshare/compose/:title',
-              element: <Compose />,
-            },
-            {
+              name: 'Compose',
               path: '/brainshare/compose',
-              element: <Compose />,
             },
-          ],
-          menuItems: [
             {
-              name: "BrainShare",
-              icon: <FileTextOutlined />,
-              path: '/brainshare',
-              routes:[
-                {
-                  name: 'Compose',
-                  path: '/brainshare/compose',
-                },
-                {
-                  name: 'Feed',
-                  path: '/brainshare/feed',
-                },
-                {
-                  name: 'Link Domain',
-                  path: '/brainshare/link-domain'
-                }
-              ]
+              name: 'Feed',
+              path: '/brainshare/feed',
+            },
+            {
+              name: 'Link Domain',
+              path: '/brainshare/link-domain'
             }
-          ],
-          hasCss: false,
-          getIdentifierHoverComponent: () => IdentifierHoverComponent,
-          getCredentialComponent: (credential: UniqueVerifiableCredential) => {
-            if (credential.verifiableCredential.type?.includes('BrainSharePost')) {
-              return BrainSharePost
-            }
-            return undefined
-          },
-          getCredentialContextMenuItems,
-          getMarkdownComponents,
-          getRemarkPlugins: () => [remarkPlugin],
-          getIdentifierTabsComponents: () => {
-            return [
-              {
-                label: 'BrainShare',
-                component: Landing,
-              },
-            ]
-          },
-
+          ]
         }
+      ],
+      hasCss: true,
+      getIdentifierHoverComponent: () => IdentifierHoverComponent,
+      getCredentialComponent: (credential: UniqueVerifiableCredential) => {
+        if (credential.verifiableCredential.type?.includes('BrainSharePost')) {
+          return BrainSharePost
+        }
+        return undefined
+      },
+      getCredentialContextMenuItems,
+      getMarkdownComponents,
+      getRemarkPlugins: () => [remarkPlugin],
+      getIdentifierTabsComponents: () => {
+        return [
+          {
+            label: 'BrainShare',
+            component: Landing,
+          },
+        ]
+      },
+
     }
+  }
 };
 
 export default Plugin;

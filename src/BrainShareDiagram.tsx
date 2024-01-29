@@ -9,7 +9,7 @@ import ReactFlow, {
   Connection,
   useNodesState,
   useEdgesState,
-  useViewport
+  useViewport,
 } from "reactflow";
 import { Tag, Typography, theme } from "antd";
 import { systemTitles } from "./api";
@@ -24,7 +24,7 @@ const nodeTypes = {
   Credential: BrainShareCredentialNode,
   text: BrainShareTextNode
 };
-export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential, context?: any}> = ({ credential, context }) => {
+export const BrainShareDiagram: React.FC<{ credential: UniqueVerifiableCredential, context?: any }> = ({ credential, context }) => {
   const { token } = theme.useToken()
   const { canvas } = credential.verifiableCredential.credentialSubject
   // console.log("nodes: ", canvas.nodes)
@@ -90,7 +90,7 @@ export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential
   console.log("edges: ", initialEdges)
 
 
-  return <div style={{width: '100vw', height: '100vh', backgroundColor: 'gray'}} onClick={() => console.log("clicked.")}>
+  return <div style={{ width: '100vw', height: '100vh', backgroundColor: token.colorBgLayout }} onClick={() => console.log("clicked.")}>
     <ReactFlow
       nodes={initialNodes}
       edges={initialEdges}
@@ -101,9 +101,10 @@ export const BrainShareDiagram: React.FC<{credential: UniqueVerifiableCredential
       // fitView
       minZoom={.1}
       // onLoad={onLoad}
-      defaultViewport={{ x: -522, y: -225, zoom: .15}}
+      //defaultViewport={{ x: -522, y: -225, zoom: .15 }}
+      fitView
     >
       <DebugFlow />
     </ReactFlow>
-    </div>
+  </div>
 }
